@@ -16,10 +16,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2  # Używamy wersji v2, bo jest bardziej stabilna
       with:
-        python-version: 3.10  # Użyj dostępnej wersji Pythona
+        python-version: 3.9  # Użyj wersji 3.9, która jest bardziej dostępna
 
     - name: Install dependencies
       run: |
