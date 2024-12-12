@@ -28,8 +28,8 @@ jobs:
 
     - name: List files in the tests directory
       run: |
-        ls -R tests  # Sprawdzamy zawartość folderu 'tests'
+        ls -R C:\Users\Oem\Insurence-python\tests  # Sprawdzamy zawartość folderu 'tests'
 
     - name: Run tests with pytest
       run: |
-        pytest tests/test.py --maxfail=1 --disable-warnings -q  # Określamy dokładny plik testowy
+        pytest C:\Users\Oem\Insurence-python\tests\test.py --maxfail=1 --disable-warnings -q  # Określamy dokładny plik testowy
