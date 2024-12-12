@@ -3,23 +3,27 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main  # lub inna gałąź
+      - main  # Dostosuj do odpowiedniej gałęzi, np. 'main' lub 'master'
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Lub odpowiedni system operacyjny
+    runs-on: ubuntu-latest  # Możesz też użyć 'windows-latest' lub 'macos-latest', zależnie od potrzeb
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2  # Sklonowanie repozytorium
 
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.10'  # Użyj wersji Pythona, która jest bardziej kompatybilna
+        python-version: '3.10'  # Wybierz wersję Pythona, którą chcesz używać, np. 3.10
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas==2.1.3
-        pip install -r requirements.txt
+        pip install -r requirements.txt  # Zainstaluj zależności z pliku requirements.txt
+        pip install pytest  # Zainstaluj pytest do uruchamiania testów
+
+    - name: Run tests
+      run: |
+        pytest --maxfail=1 --disable-warnings -q  # Uruchom testy przy pomocy pytest
