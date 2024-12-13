@@ -29,15 +29,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Download insurance CSV from Google Drive
-    - name: Download insurance CSV
-      run: |
-        gdown https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
-
-    # 5. Download test.py from Google Drive
-    - name: Download test.py
+    # 4. Copy test.py to the correct location
+    - name: Copy test.py
       run: |
         curl -L -o tests/test.py https://drive.google.com/uc?export=download&id=11omp5flknSLDVT8ifsS_0zon0SB1Xy0e
+
+    # 5. Download insurance CSV from Google Drive
+    - name: Download insurance CSV
+      run: |
+        curl -L -o data/insurance.csv https://drive.google.com/uc?export=download&id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2
 
     # 6. Run tests with pytest
     - name: Run tests with pytest
@@ -51,41 +51,3 @@ jobs:
       with:
         name: test-results
         path: test-results.xml
-
-  generate-charts:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-    # 1. Check out repository
-    - name: Check out repository
-      uses: actions/checkout@v2
-
-    # 2. Set up Python
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-
-    # 3. Install dependencies
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    # 4. Download insurance CSV from Google Drive
-    - name: Download insurance CSV
-      run: |
-        gdown https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
-
-    # 5. Run script to generate charts
-    - name: Run script to generate charts
-      run: |
-        python Cost_insurence_Vol2.py
-
-    # 6. Save charts as artifacts
-    - name: Upload charts
-      uses: actions/upload-artifact@v3
-      with:
-        name: charts
-        path: "*.png"
