@@ -14,12 +14,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
+import os
 
 # Przygotowanie danych do testów
 @pytest.fixture
 def sample_data():
-    url = "https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2"
-    df = pd.read_csv(url)
+    data_path = "data/insurance.csv"
+    if not os.path.exists(data_path):
+        raise FileNotFoundError("Plik z danymi nie został znaleziony.")
+
+    df = pd.read_csv(data_path)
 
     # Kodowanie zmiennych kategorycznych
     df.replace({'sex': {'male': 0, 'female': 1}}, inplace=True)
