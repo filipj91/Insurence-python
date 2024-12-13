@@ -29,15 +29,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Download test file from Google Drive
-    - name: Download test file
+    # 4. Download test.py from Google Drive
+    - name: Download test.py
       run: |
-        gdown https://drive.google.com/uc?id=11omp5flknSLDVT8ifsS_0zon0SB1Xy0e -O tests/test.py
+        gdown --id 11omp5flknSLDVT8ifsS_0zon0SB1Xy0e -O tests/test.py
 
     # 5. Download insurance CSV from Google Drive
     - name: Download insurance CSV
       run: |
-        gdown https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
+        gdown --id 1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
 
     # 6. Run tests with pytest
     - name: Run tests with pytest
@@ -76,7 +76,7 @@ jobs:
     # 4. Download insurance CSV from Google Drive
     - name: Download insurance CSV
       run: |
-        gdown https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
+        gdown --id 1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
 
     # 5. Run script to generate charts
     - name: Run script to generate charts
