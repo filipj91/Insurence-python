@@ -1,4 +1,4 @@
-name: CI Workflow
+name: Insurance Cost Prediction CI/CD
 
 on:
   push:
@@ -13,19 +13,64 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    # 1. Check out repository
+    - name: Check out repository
       uses: actions/checkout@v2
 
+    # 2. Set up Python
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
 
+    # 3. Install dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    # 4. Run tests
     - name: Run tests with pytest
       run: |
-        pytest tests/test.py --maxfail=1 --disable-warnings -q
+        pytest --junitxml=test-results.xml
+      continue-on-error: false
+
+    # 5. Upload test results as artifacts
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: test-results.xml
+
+  generate-charts:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Check out repository
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    # 2. Set up Python
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    # 3. Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. Generate charts and predictions
+    - name: Run script to generate charts
+      run: |
+        python cost_insurence_v2.py
+
+    # 5. Save charts as artifacts
+    - name: Upload charts
+      uses: actions/upload-artifact@v3
+      with:
+        name: charts
+        path: "*.png"
