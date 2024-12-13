@@ -19,7 +19,7 @@ import os
 # Przygotowanie danych do testów
 @pytest.fixture
 def sample_data():
-    data_path = "data/insurance.csv"
+    data_path = "/content/drive/MyDrive/Colab Notebooks/COST insurence/insurance.csv"
     if not os.path.exists(data_path):
         raise FileNotFoundError("Plik z danymi nie został znaleziony.")
 

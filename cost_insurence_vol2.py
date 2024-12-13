@@ -18,17 +18,13 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeRegressor
 import warnings
-import gdown
 import os
 
 warnings.filterwarnings("ignore")
 
-# Sprawdzenie, czy pliki są dostępne lokalnie, czy pobrane z Google Drive
-data_path = "data/insurance.csv"
-if not os.path.exists(data_path):
-    url = "https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2"
-    output = "data/insurance.csv"
-    gdown.download(url, output, quiet=False)
+# Sprawdzenie, czy pliki są dostępne lokalnie
+data_path = "/content/drive/MyDrive/Colab Notebooks/COST insurence/insurance.csv"
+test_path = "/content/drive/MyDrive/Colab Notebooks/COST insurence/test.py"
 
 # Wczytaj dane
 df = pd.read_csv(data_path)
