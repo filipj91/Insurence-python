@@ -29,15 +29,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Copy test.py to the correct location
-    - name: Copy test.py
-      run: |
-        cp .github/workflows/test.py tests/
-
-    # 5. Download insurance CSV from Google Drive
+    # 4. Download insurance CSV from Google Drive
     - name: Download insurance CSV
       run: |
         gdown https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
+
+    # 5. Download test.py from Google Drive
+    - name: Download test.py
+      run: |
+        curl -L -o tests/test.py https://drive.google.com/uc?export=download&id=11omp5flknSLDVT8ifsS_0zon0SB1Xy0e
 
     # 6. Run tests with pytest
     - name: Run tests with pytest
