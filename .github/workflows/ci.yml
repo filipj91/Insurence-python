@@ -29,13 +29,23 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Run tests
+    # 4. Download test file from Google Drive
+    - name: Download test file
+      run: |
+        gdown https://drive.google.com/uc?id=1iBlNO2YqltRX_wNINGEuek1K78JvrnYZ -O tests/test.py
+
+    # 5. Download insurance CSV from Google Drive
+    - name: Download insurance CSV
+      run: |
+        gdown https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
+
+    # 6. Run tests with pytest
     - name: Run tests with pytest
       run: |
-        pytest --junitxml=test-results.xml
+        pytest tests/ --junitxml=test-results.xml
       continue-on-error: false
 
-    # 5. Upload test results as artifacts
+    # 7. Upload test results as artifacts
     - name: Upload test results
       uses: actions/upload-artifact@v3
       with:
@@ -63,12 +73,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Generate charts and predictions
+    # 4. Download insurance CSV from Google Drive
+    - name: Download insurance CSV
+      run: |
+        gdown https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
+
+    # 5. Run script to generate charts
     - name: Run script to generate charts
       run: |
         python cost_insurence_v2.py
 
-    # 5. Save charts as artifacts
+    # 6. Save charts as artifacts
     - name: Upload charts
       uses: actions/upload-artifact@v3
       with:
