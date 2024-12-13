@@ -81,7 +81,7 @@ jobs:
     # 5. Run script to generate charts
     - name: Run script to generate charts
       run: |
-        python cost_insurence_v2.py
+        python Cost_insurence_Vol2.py
 
     # 6. Save charts as artifacts
     - name: Upload charts
