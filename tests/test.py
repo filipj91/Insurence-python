@@ -19,9 +19,10 @@ import os
 # Przygotowanie danych do testów
 @pytest.fixture
 def sample_data():
-    data_path = "/content/drive/MyDrive/Colab Notebooks/COST insurence/insurance.csv"
+    # Ścieżka względna do pliku CSV w repozytorium
+    data_path = "./data/insurance.csv"
     if not os.path.exists(data_path):
-        raise FileNotFoundError("Plik z danymi nie został znaleziony.")
+        raise FileNotFoundError(f"Plik z danymi nie został znaleziony: {data_path}")
 
     df = pd.read_csv(data_path)
 

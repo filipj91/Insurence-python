@@ -21,9 +21,9 @@ import os
 
 warnings.filterwarnings("ignore")
 
-# Sprawdzenie, czy pliki są dostępne lokalnie
-data_path = "/content/drive/MyDrive/Colab Notebooks/COST insurence/insurance.csv"
-test_path = "/content/drive/MyDrive/Colab Notebooks/COST insurence/test.py"
+# Sprawdzenie, czy pliki są dostępne w repozytorium (ścieżki względne)
+data_path = "./data/insurance.csv"
+test_path = "./tests/test.py"
 
 # Wczytaj dane
 df = pd.read_csv(data_path)

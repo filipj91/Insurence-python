@@ -29,26 +29,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Copy test.py to the correct location
-    - name: Copy test.py
-      run: cp /content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/test.py tests/
-
-    # 5. Download insurance CSV from Google Drive
-    - name: Download insurance CSV
-      run: |
-        if [ -f "/content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/insurance.csv" ]; then
-          cp /content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/insurance.csv data/
-        else
-          curl -L -o data/insurance.csv https://drive.google.com/uc?export=download&id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2
-        fi
-
-    # 6. Run tests with pytest
+    # 4. Run tests with pytest
     - name: Run tests with pytest
       run: |
         pytest tests/ --junitxml=test-results.xml
       continue-on-error: false
 
-    # 7. Upload test results as artifacts
+    # 5. Upload test results as artifacts
     - name: Upload test results
       uses: actions/upload-artifact@v3
       with:
@@ -76,21 +63,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Download insurance CSV from Google Drive
-    - name: Download insurance CSV
-      run: |
-        if [ -f "/content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/insurance.csv" ]; then
-          cp /content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/insurance.csv data/
-        else
-          curl -L -o data/insurance.csv https://drive.google.com/uc?export=download&id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2
-        fi
-
-    # 5. Run script to generate charts
+    # 4. Run script to generate charts
     - name: Run script to generate charts
       run: |
-        python /content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/Cost_insurence_Vol2.py
+        python cost_insurence_vol2.py
 
-    # 6. Save charts as artifacts
+    # 5. Save charts as artifacts
     - name: Upload charts
       uses: actions/upload-artifact@v3
       with:
