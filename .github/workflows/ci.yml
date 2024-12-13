@@ -27,7 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt --no-require-hashes
+        pip install -r requirements.txt
 
     # 4. Copy test.py to the correct location
     - name: Copy test.py
@@ -74,7 +74,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt --no-require-hashes
+        pip install -r requirements.txt
 
     # 4. Download insurance CSV from Google Drive
     - name: Download insurance CSV
