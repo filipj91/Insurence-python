@@ -8,43 +8,50 @@ Original file is located at
 """
 
 import pytest
+import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
+import gdown
 
-def test_linear_regression():
-    # Przykładowe dane do testu
-    X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
-    Y = np.array([3, 7, 11, 15])
+@pytest.fixture(scope="module")
+def sample_data():
+    # Google Drive file ID
+    file_id = "YOUR_FILE_ID"  # Zmień na ID pliku
+    url = f"https://drive.google.com/uc?id={file_id}"
+    output = "insurance.csv"
+    gdown.download(url, output, quiet=False)
+    df = pd.read_csv(output)
 
-    # Skalowanie
+    X = df.drop(columns='charges', axis=1)
+    Y = df['charges']
+    return train_test_split(X, Y, test_size=0.2, random_state=42)
+
+def test_linear_regression(sample_data):
+    X_train, X_test, Y_train, Y_test = sample_data
+
     scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
 
-    # Model
     model = LinearRegression()
-    model.fit(X_scaled, Y)
-    predictions = model.predict(X_scaled)
+    model.fit(X_train_scaled, Y_train)
 
-    # Test: Sprawdzamy, czy R^2 jest większe od 0
-    assert r2_score(Y, predictions) > 0
+    predictions = model.predict(X_test_scaled)
+    assert r2_score(Y_test, predictions) > 0
 
-def test_random_forest():
-    # Przykładowe dane do testu
-    X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
-    Y = np.array([3, 7, 11, 15])
+def test_random_forest(sample_data):
+    X_train, X_test, Y_train, Y_test = sample_data
 
-    # Skalowanie
     scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
 
-    # Model
-    model = RandomForestRegressor(n_estimators=100)
-    model.fit(X_scaled, Y)
-    predictions = model.predict(X_scaled)
+    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    model.fit(X_train_scaled, Y_train)
 
-    # Test: Sprawdzamy, czy R^2 jest większe od 0
-    assert r2_score(Y, predictions) > 0
+    predictions = model.predict(X_test_scaled)
+    assert r2_score(Y_test, predictions) > 0

@@ -28,4 +28,4 @@ jobs:
 
     - name: Run tests with pytest
       run: |
-        pytest C:\\Users\\Oem\\Insurence-python\\tests\\test.py --maxfail=1 --disable-warnings -q  # poprawiona ścieżka do pliku testowego
+        pytest tests/test.py --maxfail=1 --disable-warnings -q
