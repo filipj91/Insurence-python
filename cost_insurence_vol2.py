@@ -11,83 +11,35 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import LinearRegression
-from sklearn import metrics
-from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.model_selection import GridSearchCV
 import warnings
 import gdown
 
 warnings.filterwarnings("ignore")
 
-# Google Drive file ID
-file_id = "1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2"  # Zmień na ID pliku
-url = f"https://drive.google.com/uc?id={file_id}"
-
-# Pobieranie danych z Google Drive
+# Link do pliku z Google Drive
+url = "https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2"
 output = "insurance.csv"
 gdown.download(url, output, quiet=False)
 
-# Wczytanie danych
+# Wczytaj dane
 df = pd.read_csv(output)
-
-# Podstawowe informacje o danych
-print(df.head())
-print(df.shape)
-print(df.isnull().sum())
-print(df.describe())
-print(df.info())
-
-# Wizualizacje
-sns.set()
-
-plt.figure(figsize=(6, 6))
-sns.histplot(df['age'], kde=True)
-plt.title('Age Distribution')
-plt.show()
-
-plt.figure(figsize=(6, 6))
-sns.countplot(x='sex', data=df)
-plt.title('Sex Distribution')
-plt.show()
-
-plt.figure(figsize=(6, 6))
-sns.histplot(df['bmi'], kde=True)
-plt.title('BMI Distribution')
-plt.show()
-
-plt.figure(figsize=(6, 6))
-sns.countplot(x='children', data=df)
-plt.title('Children Distribution')
-plt.show()
-
-plt.figure(figsize=(6, 6))
-sns.countplot(x='smoker', data=df)
-plt.title('Smoker Distribution')
-plt.show()
-
-plt.figure(figsize=(6, 6))
-sns.countplot(x='region', data=df)
-plt.title('Region Distribution')
-plt.show()
-
-plt.figure(figsize=(6, 6))
-sns.histplot(df['charges'], kde=True)
-plt.title('Charges Distribution')
-plt.show()
 
 # Kodowanie zmiennych kategorycznych
 df.replace({'sex': {'male': 0, 'female': 1}}, inplace=True)
 df.replace({'smoker': {'yes': 0, 'no': 1}}, inplace=True)
 df.replace({'region': {'southeast': 0, 'southwest': 1, 'northeast': 2, 'northwest': 3}}, inplace=True)
 
-# Przygotowanie danych
+# Features and target variable
 X = df.drop(columns='charges', axis=1)
 Y = df['charges']
 
+# Podziel dane na zestaw treningowy i testowy
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
 # Skalowanie danych
@@ -99,27 +51,29 @@ X_test_scaled = scaler.transform(X_test)
 linear_regressor = LinearRegression()
 linear_regressor.fit(X_train_scaled, Y_train)
 
+# Predykcje
 training_data_prediction_lr = linear_regressor.predict(X_train_scaled)
-r2_train_lr = metrics.r2_score(Y_train, training_data_prediction_lr)
+r2_train_lr = r2_score(Y_train, training_data_prediction_lr)
 print('R squared for training data (Linear Regression): ', r2_train_lr)
 
 test_data_prediction_lr = linear_regressor.predict(X_test_scaled)
-r2_test_lr = metrics.r2_score(Y_test, test_data_prediction_lr)
+r2_test_lr = r2_score(Y_test, test_data_prediction_lr)
 print('R squared for test data (Linear Regression): ', r2_test_lr)
 
 # 2. Random Forest Regressor
 rf_regressor = RandomForestRegressor(n_estimators=100, random_state=42)
 rf_regressor.fit(X_train_scaled, Y_train)
 
+# Predykcje
 training_data_prediction_rf = rf_regressor.predict(X_train_scaled)
-r2_train_rf = metrics.r2_score(Y_train, training_data_prediction_rf)
+r2_train_rf = r2_score(Y_train, training_data_prediction_rf)
 print('R squared for training data (Random Forest): ', r2_train_rf)
 
 test_data_prediction_rf = rf_regressor.predict(X_test_scaled)
-r2_test_rf = metrics.r2_score(Y_test, test_data_prediction_rf)
+r2_test_rf = r2_score(Y_test, test_data_prediction_rf)
 print('R squared for test data (Random Forest): ', r2_test_rf)
 
-# 3. GridSearchCV dla tuningu hiperparametrów Random Forest
+# 3. GridSearchCV do tuningu hiperparametrów dla Random Forest
 param_grid = {
     'n_estimators': [100, 200, 300],
     'max_depth': [10, 15, 20],
@@ -132,20 +86,22 @@ grid_search.fit(X_train_scaled, Y_train)
 
 print("Best parameters for Random Forest:", grid_search.best_params_)
 
+# Model z najlepszymi parametrami
 best_rf_regressor = grid_search.best_estimator_
 
+# Predykcje
 training_data_prediction_rf_best = best_rf_regressor.predict(X_train_scaled)
-r2_train_rf_best = metrics.r2_score(Y_train, training_data_prediction_rf_best)
+r2_train_rf_best = r2_score(Y_train, training_data_prediction_rf_best)
 print('R squared for training data (Tuned Random Forest): ', r2_train_rf_best)
 
 test_data_prediction_rf_best = best_rf_regressor.predict(X_test_scaled)
-r2_test_rf_best = metrics.r2_score(Y_test, test_data_prediction_rf_best)
+r2_test_rf_best = r2_score(Y_test, test_data_prediction_rf_best)
 print('R squared for test data (Tuned Random Forest): ', r2_test_rf_best)
 
 # 4. Predykcja dla nowych danych wejściowych
 input_data = (31, 1, 25.74, 0, 1, 0)
 input_data_as_numpy_array = np.asarray(input_data).reshape(1, -1)
-input_data_scaled = scaler.transform(input_data_as_numpy_array)
+input_data_scaled = scaler.transform(input_data_as_numpy_array)  # Skalowanie danych wejściowych
 
 # Predykcja dla regresji liniowej
 prediction_lr = linear_regressor.predict(input_data_scaled)

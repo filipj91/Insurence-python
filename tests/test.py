@@ -9,27 +9,28 @@ Original file is located at
 
 import pytest
 import pandas as pd
-import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
-import gdown
 
-@pytest.fixture(scope="module")
+# Przygotowanie danych do testów
+@pytest.fixture
 def sample_data():
-    # Google Drive file ID
-    file_id = "YOUR_FILE_ID"  # Zmień na ID pliku
-    url = f"https://drive.google.com/uc?id={file_id}"
-    output = "insurance.csv"
-    gdown.download(url, output, quiet=False)
-    df = pd.read_csv(output)
+    url = "https://drive.google.com/uc?id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2"
+    df = pd.read_csv(url)
+
+    # Kodowanie zmiennych kategorycznych
+    df.replace({'sex': {'male': 0, 'female': 1}}, inplace=True)
+    df.replace({'smoker': {'yes': 0, 'no': 1}}, inplace=True)
+    df.replace({'region': {'southeast': 0, 'southwest': 1, 'northeast': 2, 'northwest': 3}}, inplace=True)
 
     X = df.drop(columns='charges', axis=1)
     Y = df['charges']
     return train_test_split(X, Y, test_size=0.2, random_state=42)
 
+# Test dla regresji liniowej
 def test_linear_regression(sample_data):
     X_train, X_test, Y_train, Y_test = sample_data
 
@@ -39,10 +40,11 @@ def test_linear_regression(sample_data):
 
     model = LinearRegression()
     model.fit(X_train_scaled, Y_train)
-
     predictions = model.predict(X_test_scaled)
-    assert r2_score(Y_test, predictions) > 0
 
+    assert r2_score(Y_test, predictions) > 0.5  # Sprawdzenie jakości modelu
+
+# Test dla Random Forest
 def test_random_forest(sample_data):
     X_train, X_test, Y_train, Y_test = sample_data
 
@@ -52,6 +54,6 @@ def test_random_forest(sample_data):
 
     model = RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X_train_scaled, Y_train)
-
     predictions = model.predict(X_test_scaled)
-    assert r2_score(Y_test, predictions) > 0
+
+    assert r2_score(Y_test, predictions) > 0.5  # Sprawdzenie jakości modelu
