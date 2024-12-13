@@ -37,7 +37,7 @@ jobs:
     # 5. Download insurance CSV from Google Drive
     - name: Download insurance CSV
       run: |
-        gdown --id 1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
+        curl -L -o data/insurance.csv https://drive.google.com/uc?export=download&id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2
 
     # 6. Run tests with pytest
     - name: Run tests with pytest
@@ -76,7 +76,7 @@ jobs:
     # 4. Download insurance CSV from Google Drive
     - name: Download insurance CSV
       run: |
-        gdown --id 1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2 -O data/insurance.csv
+        curl -L -o data/insurance.csv https://drive.google.com/uc?export=download&id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2
 
     # 5. Run script to generate charts
     - name: Run script to generate charts
