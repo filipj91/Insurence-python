@@ -31,13 +31,13 @@ jobs:
 
     # 4. Copy test.py to the correct location
     - name: Copy test.py
-      run: cp /content/drive/MyDrive/Colab Notebooks/COST\ insurence/test.py tests/
+      run: cp /content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/test.py tests/
 
     # 5. Download insurance CSV from Google Drive
     - name: Download insurance CSV
       run: |
-        if [ -f "/content/drive/MyDrive/Colab Notebooks/COST insurence/insurance.csv" ]; then
-          cp /content/drive/MyDrive/Colab Notebooks/COST\ insurence/insurance.csv data/
+        if [ -f "/content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/insurance.csv" ]; then
+          cp /content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/insurance.csv data/
         else
           curl -L -o data/insurance.csv https://drive.google.com/uc?export=download&id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2
         fi
@@ -79,8 +79,8 @@ jobs:
     # 4. Download insurance CSV from Google Drive
     - name: Download insurance CSV
       run: |
-        if [ -f "/content/drive/MyDrive/Colab Notebooks/COST insurence/insurance.csv" ]; then
-          cp /content/drive/MyDrive/Colab Notebooks/COST\ insurence/insurance.csv data/
+        if [ -f "/content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/insurance.csv" ]; then
+          cp /content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/insurance.csv data/
         else
           curl -L -o data/insurance.csv https://drive.google.com/uc?export=download&id=1-9hXY8s5kDU4JEmQiehvLV_h8nc3MYy2
         fi
@@ -88,7 +88,7 @@ jobs:
     # 5. Run script to generate charts
     - name: Run script to generate charts
       run: |
-        python /content/drive/MyDrive/Colab Notebooks/COST insurence/Cost_insurence_Vol2.py
+        python /content/drive/MyDrive/Colab\ Notebooks/COST\ insurence/Cost_insurence_Vol2.py
 
     # 6. Save charts as artifacts
     - name: Upload charts
