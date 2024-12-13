@@ -32,7 +32,7 @@ jobs:
     # 4. Download test file from Google Drive
     - name: Download test file
       run: |
-        gdown https://drive.google.com/uc?id=1iBlNO2YqltRX_wNINGEuek1K78JvrnYZ -O tests/test.py
+        gdown https://drive.google.com/uc?id=11omp5flknSLDVT8ifsS_0zon0SB1Xy0e -O tests/test.py
 
     # 5. Download insurance CSV from Google Drive
     - name: Download insurance CSV
