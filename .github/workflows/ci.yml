@@ -29,48 +29,23 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Run tests with pytest
+    # 4. Debug: List directory structure
+    - name: Debug - List files
+      run: |
+        echo "Listing all files in the repository:"
+        ls -R
+        echo "Listing files in the 'data' directory:"
+        ls data || echo "Directory 'data' does not exist!"
+
+    # 5. Run tests with pytest
     - name: Run tests with pytest
       run: |
-        pytest tests/ --junitxml=test-results.xml
+        pytest -v --maxfail=3 tests/ --junitxml=test-results.xml
       continue-on-error: false
 
-    # 5. Upload test results as artifacts
+    # 6. Upload test results as artifacts
     - name: Upload test results
       uses: actions/upload-artifact@v3
       with:
         name: test-results
         path: test-results.xml
-
-  generate-charts:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-    # 1. Check out repository
-    - name: Check out repository
-      uses: actions/checkout@v2
-
-    # 2. Set up Python
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-
-    # 3. Install dependencies
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    # 4. Run script to generate charts
-    - name: Run script to generate charts
-      run: |
-        python cost_insurence_vol2.py
-
-    # 5. Save charts as artifacts
-    - name: Upload charts
-      uses: actions/upload-artifact@v3
-      with:
-        name: charts
-        path: "*.png"
